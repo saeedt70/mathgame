@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍎 بازی ریاضی میوه‌ها 🍌🥥</title>
+<style>
+  body {
+    font-family: "Vazir", sans-serif;
+    text-align: center;
+    background: linear-gradient(to right, #5ee7df, #b490ca);
+    color: #222;
+    direction: rtl;
+    overflow-x: hidden;
+  }
+  .hidden { display: none; }
+  h1 { margin-top: 20px; }
+  .menu-btn {
+    font-size: 1.4em;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  .level-btn {
+    display: inline-block;
+    width: 70px;
+    height: 70px;
+    margin: 10px;
+    border-radius: 50%;
+    font-size: 1.3em;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .level-btn:hover { transform: scale(1.1); }
+  .locked { background: #777; color: #eee; cursor: not-allowed; }
+  .unlocked { background: #fff; color: #222; }
+  #timer, #lives, #score {
+    font-size: 1.2em;
+    margin: 5px;
+  }
+  #timer span { background: #ff5f5f; color: #fff; padding: 5px 10px; border-radius: 8px; }
+  input {
+    font-size: 1.2em;
+    padding: 5px 10px;
+    text-align: center;
+  }
+  img { width: 50px; vertical-align: middle; }
+  button { cursor: pointer; }
+</style>
+</head>
+<body>
+
+<h1>🍎 بازی ریاضی میوه‌ها 🍌🥥</h1>
+
+<!-- 🏠 منوی اصلی -->
+<div id="mainMenu">
+  <button class="menu-btn" onclick="openLevelMenu()">🧩 انتخاب مرحله</button>
+  <button id="musicBtn" class="menu-btn" onclick="toggleMusic()">🔊 موزیک</button>
+</div>
+
+<!-- 🔢 منوی انتخاب مرحله -->
+<div id="levelMenu" class="hidden">
+  <h2>🧮 انتخاب مرحله</h2>
+  <div id="levels"></div>
+  <button class="menu-btn" onclick="backToMain()">⬅ بازگشت</button>
+</div>
+
+<!-- 🎮 صفحه‌ی بازی -->
+<div id="game" class="hidden">
+  <div id="info">
+    <div id="timer">⏱ زمان: <span id="time">30</span></div>
+    <div id="lives">❤️❤️❤️</div>
+    <div id="score">⭐ امتیاز: <span id="scoreValue">0</span></div>
+    <div>📈 مرحله: <span id="levelNum">1</span></div>
+  </div>
+
+  <div id="equations"></div>
+
+  <div class="equation">
+    <input type="number" id="answer">
+    <button onclick="checkAnswer()">بررسی</button>
+  </div>
+
+  <p id="result"></p>
+</div>
+
+<!-- 🎵 صداها -->
+<audio id="bgMusic" loop><source src="background.mp3" type="audio/mpeg"></audio>
+<audio id="soundWin" src="win.mp3"></audio>
+<audio id="soundWrong" src="wrong.mp3"></audio>
+<audio id="soundLose" src="lose.mp3"></audio>
+
+<script>
+// 🎮 داده‌ها
+let apple, banana, coconut, correctAnswer;
+let timeLeft, timerInterval;
+let lives = 3;
+let score = 0;
+let level = 1;
+let musicPlaying = false;
+let maxUnlocked = Number(localStorage.getItem("maxUnlocked") || 1);
+
+// 🏠 بازگشت به منوی اصلی
+function backToMain() {
+  document.getElementById("levelMenu").classList.add("hidden");
+  document.getElementById("mainMenu").classList.remove("hidden");
+}
+
+// 🧩 باز کردن منوی انتخاب مرحله
+function openLevelMenu() {
+  document.getElementById("mainMenu").classList.add("hidden");
+  document.getElementById("levelMenu").classList.remove("hidden");
+  generateLevelButtons();
+}
+
+// 🔘 ساخت دکمه‌های مرحله‌ها
+function generateLevelButtons() {
+  const levelsDiv = document.getElementById("levels");
+  levelsDiv.innerHTML = "";
+  for (let i = 1; i <= 10; i++) {
+    const btn = document.createElement("button");
+    btn.textContent = i;
+    btn.className = "level-btn " + (i <= maxUnlocked ? "unlocked" : "locked");
+    if (i <= maxUnlocked) btn.onclick = () => startGame(i);
+    levelsDiv.appendChild(btn);
+  }
+}
+
+// ▶ شروع بازی از مرحله مشخص
+function startGame(selectedLevel) {
+  level = selectedLevel;
+  document.getElementById("levelNum").textContent = level;
+  document.getElementById("levelMenu").classList.add("hidden");
+  document.getElementById("game").classList.remove("hidden");
+  resetGame();
+  generateEquations();
+  startTimer();
+}
+
+// 🎲 ساخت معادله‌ها
+function generateEquations() {
+  const range = 10 + level * 5;
+  apple = getRandom(5, range);
+  banana = getRandom(2, apple);
+  coconut = getRandom(1, banana);
+  correctAnswer = apple + banana + coconut;
+
+  const eqDiv = document.getElementById("equations");
+  eqDiv.innerHTML = `
+    <div class="equation">🍎 + 🍎 + 🍎 = ${apple * 3}</div>
+    <div class="equation">🍎 + 🍌 + 🍌 = ${apple + banana * 2}</div>
+    <div class="equation">🍌 - 🥥 = ${banana - coconut}</div>
+    <div class="equation">🥥 + 🍎 + 🍌 = ?</div>
+  `;
+}
+
+// ✅ بررسی پاسخ
+function checkAnswer() {
+  const answer = Number(document.getElementById("answer").value);
+  const resultEl = document.getElementById("result");
+
+  if (answer === correctAnswer) {
+    clearInterval(timerInterval);
+    playSound("win");
+    showParticles("🎉");
+    resultEl.textContent = "✅ عالی! جواب درسته!";
+    resultEl.style.color = "green";
+    score += 10 * level;
+    document.getElementById("scoreValue").textContent = score;
+    disableGame();
+    unlockNextLevel();
+    setTimeout(backToLevelMenu, 2500);
+  } else {
+    lives--;
+    updateLives();
+    playSound("wrong");
+    showParticles("💔");
+    resultEl.textContent = "❌ اشتباهه! دوباره تلاش کن.";
+    resultEl.style.color = "red";
+    if (lives <= 0) {
+      clearInterval(timerInterval);
+      playSound("lose");
+      showParticles("💀");
+      gameOver("💀 باختی!");
+    }
+  }
+}
+
+// 🎯 بعد از برد، بازگشت به منوی انتخاب مرحله
+function backToLevelMenu() {
+  document.getElementById("game").classList.add("hidden");
+  document.getElementById("levelMenu").classList.remove("hidden");
+  generateLevelButtons();
+}
+
+// 🔓 آزاد کردن مرحله بعد
+function unlockNextLevel() {
+  if (level >= maxUnlocked && level < 10) {
+    maxUnlocked++;
+    localStorage.setItem("maxUnlocked", maxUnlocked);
+  }
+}
+
+// ⏱ تایمر
+function startTimer() {
+  timeLeft = Math.max(10, 30 - level * 2);
+  document.getElementById("time").textContent = timeLeft;
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    document.getElementById("time").textContent = timeLeft;
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      playSound("lose");
+      showParticles("💀");
+      gameOver("⏰ زمان تموم شد!");
+    }
+  }, 1000);
+}
+
+// ♻ ریست بازی
+function resetGame() {
+  clearInterval(timerInterval);
+  lives = 3;
+  document.getElementById("answer").disabled = false;
+  document.querySelector("#game button").disabled = false;
+  updateLives();
+  document.getElementById("result").textContent = "";
+}
+
+// ❤️ به‌روزرسانی جان‌ها
+function updateLives() {
+  const hearts = "❤️".repeat(lives) + "🤍".repeat(3 - lives);
+  document.getElementById("lives").innerHTML = hearts;
+}
+
+// 🚫 غیرفعال کردن دکمه‌ها
+function disableGame() {
+  document.getElementById("answer").disabled = true;
+  document.querySelector("#game button").disabled = true;
+}
+
+// 🔚 باخت کامل
+function gameOver(msg) {
+  disableGame();
+  document.getElementById("result").textContent = msg;
+  document.getElementById("result").style.color = "red";
+  setTimeout(backToLevelMenu, 3000);
+}
+
+// 🎵 کنترل موزیک
+function toggleMusic() {
+  const music = document.getElementById("bgMusic");
+  const btn = document.getElementById("musicBtn");
+  if (musicPlaying) {
+    music.pause();
+    btn.textContent = "🔈 موزیک";
+  } else {
+    music.play();
+    btn.textContent = "🔊 توقف موزیک";
+  }
+  musicPlaying = !musicPlaying;
+}
+
+// 🔊 صداها
+function playSound(type) {
+  const sounds = {
+    win: document.getElementById("soundWin"),
+    wrong: document.getElementById("soundWrong"),
+    lose: document.getElementById("soundLose")
+  };
+  const s = sounds[type];
+  if (s) { s.currentTime = 0; s.play(); }
+}
+
+// 🎇 پارتیکل‌ها
+function showParticles(emoji) {
+  for (let i = 0; i < 50; i++) {
+    const p = document.createElement("div");
+    p.textContent = emoji;
+    p.style.position = "fixed";
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.top = "-10px";
+    p.style.fontSize = Math.random() * 24 + 12 + "px";
+    p.style.animation = `fall ${2 + Math.random() * 3}s linear`;
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 4000);
+  }
+}
+const style = document.createElement("style");
+style.textContent = `@keyframes fall { to { transform: translateY(100vh) rotate(360deg); opacity: 0; } }`;
+document.head.appendChild(style);
+
+// 🎲 عدد تصادفی
+function getRandom(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+</script>
+</body>
+</html>
