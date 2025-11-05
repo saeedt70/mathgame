@@ -218,7 +218,7 @@ function gameOver(isTimeOut){
     playGameOver();
     showParticles("💀");
     clearInterval(timerInterval);
-    setTimeout(()=> { alert(isTimeOut?"💀 Time's up!":"💀 No lives left!"); backToMenu(); }, 500);
+    setTimeout(()=> { alert(isTimeOut?"💀 Time's up!":"💀 No lives left!"); goToLevelSelection(); }, 500);
 }
 
 // Hint and AddTime
@@ -285,5 +285,6 @@ initMenu();
 </script>
 </body>
 </html>
+
 
 
