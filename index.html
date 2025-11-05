@@ -212,6 +212,7 @@ function initMenu(){
 
 function openSeason(season){
     currentSeason=season;
+    // اطمینان از خاموش شدن منوی فصل‌ها
     document.getElementById("menu-screen").classList.remove("active");
     document.getElementById("season-screen").classList.add("active");
     document.getElementById("season-title").innerText=`Season ${season+1}`;
@@ -277,7 +278,7 @@ function updateTopBar(){
     document.getElementById("level-num").innerText="📈 Level: "+(currentLevel+1);
 }
 
-// Answer check (اصلاح‌شده برای رفتن به منوی انتخاب مراحل)
+// Answer check (اصلاح نهایی)
 function checkAnswer(){
     let user=Number(document.getElementById("answer").value);
     document.getElementById("answer").value='';
@@ -293,11 +294,11 @@ function checkAnswer(){
         
         setTimeout(()=> { 
             alert("🎉 Correct!");
-            // تغییر صفحه: رفتن به منوی انتخاب مراحل
+            // **تغییر اصلی:** مطمئن می‌شویم که به Season Screen برگردیم.
             document.getElementById("game-screen").classList.remove("active");
             document.getElementById("season-screen").classList.add("active");
             // به‌روزرسانی لیست مراحل (برای باز شدن مرحله بعدی)
-            openSeason(currentSeason);
+            openSeason(currentSeason); 
         }, 500);
         
     } else{
