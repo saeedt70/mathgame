@@ -237,12 +237,7 @@ function backToMenu(){
 }
 
 
-  function backToSeason(){
-    clearInterval(timerInterval);
-    document.getElementById("game-screen").classList.remove("active");
-    document.getElementById("menu-screen").classList.remove("active");
-    document.getElementById("season-screen").classList.add("active");
-}
+
 // Game
 function startLevel(levelIndex){
     currentLevel=levelIndex;
@@ -292,7 +287,8 @@ function checkAnswer(){
         updateTopBar();
         playCorrect();
         showParticles("🎉");
-        setTimeout(()=> { alert("🎉 Correct!"); backToSeason(); }, 500);
+        setTimeout(()=> { alert("🎉 Correct!");     alert("🎉 Correct!"); 
+    openSeason(currentSeason); }, 500);
     } else{
         lives--;
         updateTopBar();
@@ -378,5 +374,6 @@ initMenu();
 </script>
 </body>
 </html>
+
 
 
