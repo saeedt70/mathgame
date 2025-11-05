@@ -53,7 +53,7 @@ h1,h2,h3 { margin:10px 0; color:#333; }
   padding:20px;
   border-radius:12px;
   display:inline-block;
-  box-shadow:0 4px 12px rgba(0,0,0,0.2);
+  box-shadow:0 4px 4px rgba(0,0,0,0.1); /* کاهش سایه برای خوانایی بهتر */
 }
 
 #answers input {
@@ -212,9 +212,12 @@ function initMenu(){
 
 function openSeason(season){
     currentSeason=season;
-    // اطمینان از خاموش شدن منوی فصل‌ها
+    // مطمئن می‌شویم صفحه منوی اصلی خاموش شود.
     document.getElementById("menu-screen").classList.remove("active");
     document.getElementById("season-screen").classList.add("active");
+    // همچنین مطمئن می‌شویم صفحه بازی اگر فعال بود، خاموش شود.
+    document.getElementById("game-screen").classList.remove("active");
+    
     document.getElementById("season-title").innerText=`Season ${season+1}`;
     let levelsDiv=document.getElementById("levels");
     levelsDiv.innerHTML="";
@@ -278,14 +281,26 @@ function updateTopBar(){
     document.getElementById("level-num").innerText="📈 Level: "+(currentLevel+1);
 }
 
-// Answer check (اصلاح نهایی)
+// *** تابع جدید برای بازگشت به منوی مراحل (تنها برای استفاده بعد از پاسخ صحیح) ***
+function goToSeasonMenu(){
+    // 1. توقف زمان‌سنج
+    clearInterval(timerInterval); 
+    
+    // 2. تغییر صفحه: بازی -> منوی مراحل
+    document.getElementById("game-screen").classList.remove("active");
+    document.getElementById("season-screen").classList.add("active");
+    
+    // 3. به‌روزرسانی لیست مراحل (برای باز شدن مرحله بعدی)
+    openSeason(currentSeason);
+}
+// *** پایان تابع جدید ***
+
+
+// Answer check (اصلاح نهایی برای استفاده از تابع جدید)
 function checkAnswer(){
     let user=Number(document.getElementById("answer").value);
     document.getElementById("answer").value='';
     
-    // توقف زمان‌سنج بلافاصله
-    clearInterval(timerInterval); 
-
     if(user===currentEquation.answer){
         score++;
         updateTopBar();
@@ -294,11 +309,8 @@ function checkAnswer(){
         
         setTimeout(()=> { 
             alert("🎉 Correct!");
-            // **تغییر اصلی:** مطمئن می‌شویم که به Season Screen برگردیم.
-            document.getElementById("game-screen").classList.remove("active");
-            document.getElementById("season-screen").classList.add("active");
-            // به‌روزرسانی لیست مراحل (برای باز شدن مرحله بعدی)
-            openSeason(currentSeason); 
+            // استفاده از تابع جدید که مستقیماً به صفحه مراحل برمی‌گردد
+            goToSeasonMenu(); 
         }, 500);
         
     } else{
@@ -306,11 +318,13 @@ function checkAnswer(){
         updateTopBar();
         playWrong();
         showParticles("❌");
+        
+        clearInterval(timerInterval); // توقف موقت برای نمایش Alert
+        
         if(lives<=0) gameOver(false);
         else {
-            // اگر اشتباه بود، زمان‌سنج را دوباره فعال کن
-            startTimer(); 
             alert("❌ Wrong answer. Lives left: "+lives);
+            startTimer(); // ادامه زمان‌سنج
         }
     }
 }
