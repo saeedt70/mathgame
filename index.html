@@ -5,20 +5,20 @@
 <title>🍎 Fruit Math Game 🍉</title>
 <style>
 body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to bottom, #f0f8ff, #cce7ff);
-  margin:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom, #f0f8ff, #cce7ff);
+  margin:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
 }
 
 .screen {
-  display:none;
-  width: 90%;
-  max-width: 600px;
-  text-align:center;
+  display:none;
+  width: 90%;
+  max-width: 600px;
+  text-align:center;
 }
 
 .active { display:block; }
@@ -26,134 +26,134 @@ body {
 h1,h2,h3 { margin:10px 0; color:#333; }
 
 .level-button {
-  margin:5px;
-  padding:12px 18px;
-  font-size:18px;
-  cursor:pointer;
-  background-color:#4CAF50;
-  color:white;
-  border:none;
-  border-radius:8px;
-  transition:0.2s;
+  margin:5px;
+  padding:12px 18px;
+  font-size:18px;
+  cursor:pointer;
+  background-color:#4CAF50;
+  color:white;
+  border:none;
+  border-radius:8px;
+  transition:0.2s;
 }
 
 .level-button:hover { background-color:#45a049; }
 .locked {
-  opacity:0.4;
-  cursor:not-allowed;
-  background-color:#999;
+  opacity:0.4;
+  cursor:not-allowed;
+  background-color:#999;
 }
 
 #game-container { margin-top:20px; }
 
 #equation {
-  font-size:28px;
-  line-height:1.5;
-  background:#fff;
-  padding:20px;
-  border-radius:12px;
-  display:inline-block;
-  box-shadow:0 4px 12px rgba(0,0,0,0.2);
+  font-size:28px;
+  line-height:1.5;
+  background:#fff;
+  padding:20px;
+  border-radius:12px;
+  display:inline-block;
+  box-shadow:0 4px 12px rgba(0,0,0,0.2);
 }
 
 #answers input {
-  font-size:24px;
-  width:120px;
-  text-align:center;
-  padding:10px;
-  border:2px solid #ddd;
-  border-radius:8px;
+  font-size:24px;
+  width:120px;
+  text-align:center;
+  padding:10px;
+  border:2px solid #ddd;
+  border-radius:8px;
 }
 
 #answers button {
-  font-size:24px;
-  padding:10px 20px;
-  margin-left:10px;
-  background-color:#008CBA;
-  color:white;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-  transition:0.2s;
+  font-size:24px;
+  padding:10px 20px;
+  margin-left:10px;
+  background-color:#008CBA;
+  color:white;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  transition:0.2s;
 }
 
 #answers button:hover { background-color:#0079a1; }
 
 #hints button {
-  margin:5px;
-  padding:10px 25px;
-  font-size:18px;
-  background-color:#f44336;
-  color:white;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-  transition:0.2s;
+  margin:5px;
+  padding:10px 25px;
+  font-size:18px;
+  background-color:#f44336;
+  color:white;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  transition:0.2s;
 }
 
 #hints button:hover { background-color:#d7372a; }
 
 .disabled-button {
-  opacity:0.4;
-  cursor:not-allowed;
-  pointer-events:none;
+  opacity:0.4;
+  cursor:not-allowed;
+  pointer-events:none;
 }
 
 #top-bar {
-  display:flex;
-  justify-content:space-around;
-  font-size:18px;
-  margin-top:20px;
-  background:#333;
-  color:white;
-  padding:12px 0;
-  border-radius:8px;
+  display:flex;
+  justify-content:space-around;
+  font-size:18px;
+  margin-top:20px;
+  background:#333;
+  color:white;
+  padding:12px 0;
+  border-radius:8px;
 }
 
 .particle {
-  position:absolute;
-  font-size:24px;
-  animation: rise 1s ease-out forwards;
+  position:absolute;
+  font-size:24px;
+  animation: rise 1s ease-out forwards;
 }
 
 @keyframes rise {
-  0% { opacity:1; transform: translateY(0) scale(1); }
-  100% { opacity:0; transform: translateY(-100px) scale(1.5); }
+  0% { opacity:1; transform: translateY(0) scale(1); }
+  100% { opacity:0; transform: translateY(-100px) scale(1.5); }
 }
 </style>
 </head>
 <body>
 
 <div id="menu-screen" class="screen active">
-  <h1>🍎 Fruit Math Game 🍉</h1>
-  <h3>Seasons</h3>
-  <div id="seasons"></div>
+  <h1>🍎 Fruit Math Game 🍉</h1>
+  <h3>Seasons</h3>
+  <div id="seasons"></div>
 </div>
 
 <div id="season-screen" class="screen">
-  <h2 id="season-title"></h2>
-  <div id="levels"></div>
-  <button class="level-button" style="background-color:#555;" onclick="backToMenu()">🔙 Back</button>
+  <h2 id="season-title"></h2>
+  <div id="levels"></div>
+  <button class="level-button" style="background-color:#555;" onclick="backToMenu()">🔙 Back</button>
 </div>
 
 <div id="game-screen" class="screen">
-  <div id="top-bar">
-    <span id="time">⏱ Time: 60</span>
-    <span id="lives">❤️❤️❤️</span>
-    <span id="score">⭐ Score: 0</span>
-    <span id="level-num">📈 Level: 1</span>
-  </div>
-  <div id="game-container">
-    <div id="equation"></div>
-    <div id="answers">
-      <input type="number" id="answer" placeholder="Answer">
-      <button onclick="checkAnswer()">✔️</button>
-    </div>
-    <div id="hints">
-      <button id="hint-btn" onclick="useHint()">💡 Hint</button>
-      <button id="addtime-btn" onclick="useAddTime()">⏱ Add Time</button>
-    </div>
-  </div>
+  <div id="top-bar">
+    <span id="time">⏱ Time: 60</span>
+    <span id="lives">❤️❤️❤️</span>
+    <span id="score">⭐ Score: 0</span>
+    <span id="level-num">📈 Level: 1</span>
+  </div>
+  <div id="game-container">
+    <div id="equation"></div>
+    <div id="answers">
+      <input type="number" id="answer" placeholder="Answer">
+      <button onclick="checkAnswer()">✔️</button>
+    </div>
+    <div id="hints">
+      <button id="hint-btn" onclick="useHint()">💡 Hint</button>
+      <button id="addtime-btn" onclick="useAddTime()">⏱ Add Time</button>
+    </div>
+  </div>
 </div>
 
 <audio id="correct-sound" src="https://github.com/saeedt70/mathgame/edit/main/win.mp3"></audio>
@@ -167,213 +167,225 @@ let currentLevel = 0, currentSeason = 0;
 let currentEquation, timerInterval;
 let hintUsed=false, addTimeUsed=false;
 
-// Generate levels
+// Generate levels (بدون تغییر)
 function generateLevels(count){
-    const generatedLevels=[];
-    for(let i=0;i<count;i++){
-        const fruitValues={};
-        let availableFruits=[...fruits];
-        const neededFruits=[];
-        for(let j=0;j<3;j++){
-            const index=Math.floor(Math.random()*availableFruits.length);
-            neededFruits.push(availableFruits[index]);
-            availableFruits.splice(index,1);
-        }
-        neededFruits.forEach(f=>{
-            if(!(f in fruitValues)) fruitValues[f]=Math.floor(Math.random()*8)+2;
-        });
-        const f=neededFruits[0], g=neededFruits[1], h=neededFruits[2];
-        const val_f=fruitValues[f], val_g=fruitValues[g], val_h=fruitValues[h];
-        const line1=`${f} + ${f} + ${f} = ${val_f*3}`;
-        const line2=`${g} + ${g} + ${f} = ${(val_g*2)+val_f}`;
-        const line3=`${h} + ${f} - ${g} = ${val_h+val_f-val_g}`;
-        const line4=`${f} * ${g} - ${h} = ?`;
-        const finalAnswer=(val_f*val_g)-val_h;
-        generatedLevels.push({lines:[line1,line2,line3,line4], answer:finalAnswer, fruitValues:fruitValues});
-    }
-    return generatedLevels;
+    const generatedLevels=[];
+    for(let i=0;i<count;i++){
+        const fruitValues={};
+        let availableFruits=[...fruits];
+        const neededFruits=[];
+        for(let j=0;j<3;j++){
+            const index=Math.floor(Math.random()*availableFruits.length);
+            neededFruits.push(availableFruits[index]);
+            availableFruits.splice(index,1);
+        }
+        neededFruits.forEach(f=>{
+            if(!(f in fruitValues)) fruitValues[f]=Math.floor(Math.random()*8)+2;
+        });
+        const f=neededFruits[0], g=neededFruits[1], h=neededFruits[2];
+        const val_f=fruitValues[f], val_g=fruitValues[g], val_h=fruitValues[h];
+        const line1=`${f} + ${f} + ${f} = ${val_f*3}`;
+        const line2=`${g} + ${g} + ${f} = ${(val_g*2)+val_f}`;
+        const line3=`${h} + ${f} - ${g} = ${val_h+val_f-val_g}`;
+        const line4=`${f} * ${g} - ${h} = ?`;
+        const finalAnswer=(val_f*val_g)-val_h;
+        generatedLevels.push({lines:[line1,line2,line3,line4], answer:finalAnswer, fruitValues:fruitValues});
+    }
+    return generatedLevels;
 }
 
 const levels=generateLevels(100);
 
-// Menu
+// Menu (بدون تغییر)
 function initMenu(){
-    let seasonsDiv=document.getElementById("seasons");
-    seasonsDiv.innerHTML='';
-    for(let s=0;s<4;s++){
-        let btn=document.createElement("button");
-        btn.innerText=`Season ${s+1}`;
-        btn.className="level-button";
-        if(s*25>score){ btn.classList.add("locked"); btn.disabled=true;}
-        btn.onclick=()=> openSeason(s);
-        seasonsDiv.appendChild(btn);
-    }
+    let seasonsDiv=document.getElementById("seasons");
+    seasonsDiv.innerHTML='';
+    for(let s=0;s<4;s++){
+        let btn=document.createElement("button");
+        btn.innerText=`Season ${s+1}`;
+        btn.className="level-button";
+        if(s*25>score){ btn.classList.add("locked"); btn.disabled=true;}
+        btn.onclick=()=> openSeason(s);
+        seasonsDiv.appendChild(btn);
+    }
 }
 
 function openSeason(season){
-    currentSeason=season;
-    document.getElementById("menu-screen").classList.remove("active");
-    document.getElementById("season-screen").classList.add("active");
-    document.getElementById("season-title").innerText=`Season ${season+1}`;
-    let levelsDiv=document.getElementById("levels");
-    levelsDiv.innerHTML="";
-    for(let i=0;i<25;i++){
-        let globalIndex=season*25+i;
-        let btn=document.createElement("button");
-        btn.className="level-button";
-        btn.innerText=`Level ${i+1}`;
-        if(globalIndex>score){ btn.classList.add("locked"); btn.disabled=true;}
-        btn.onclick=()=> startLevel(globalIndex);
-        levelsDiv.appendChild(btn);
-    }
+    currentSeason=season;
+    document.getElementById("menu-screen").classList.remove("active");
+    document.getElementById("season-screen").classList.add("active");
+    document.getElementById("season-title").innerText=`Season ${season+1}`;
+    let levelsDiv=document.getElementById("levels");
+    levelsDiv.innerHTML="";
+    for(let i=0;i<25;i++){
+        let globalIndex=season*25+i;
+        let btn=document.createElement("button");
+        btn.className="level-button";
+        btn.innerText=`Level ${i+1}`;
+        if(globalIndex>score){ btn.classList.add("locked"); btn.disabled=true;}
+        btn.onclick=()=> startLevel(globalIndex);
+        levelsDiv.appendChild(btn);
+    }
 }
 
 function backToMenu(){
-    clearInterval(timerInterval);
-    document.getElementById("season-screen").classList.remove("active");
-    document.getElementById("game-screen").classList.remove("active");
-    document.getElementById("menu-screen").classList.add("active");
-    initMenu();
+    clearInterval(timerInterval);
+    document.getElementById("season-screen").classList.remove("active");
+    document.getElementById("game-screen").classList.remove("active");
+    document.getElementById("menu-screen").classList.add("active");
+    initMenu();
 }
 
 
-
-// Game
+// Game (بدون تغییر)
 function startLevel(levelIndex){
-    currentLevel=levelIndex;
-    currentEquation=levels[levelIndex];
-    document.getElementById("menu-screen").classList.remove("active");
-    document.getElementById("season-screen").classList.remove("active");
-    document.getElementById("game-screen").classList.add("active");
-    timer=60; lives=3;
-    hintUsed=false; addTimeUsed=false;
-    document.getElementById("hint-btn").classList.remove("disabled-button");
-    document.getElementById("addtime-btn").classList.remove("disabled-button");
-    updateTopBar();
-    showEquation();
-    startTimer();
+    currentLevel=levelIndex;
+    currentEquation=levels[levelIndex];
+    document.getElementById("menu-screen").classList.remove("active");
+    document.getElementById("season-screen").classList.remove("active");
+    document.getElementById("game-screen").classList.add("active");
+    timer=60; lives=3;
+    hintUsed=false; addTimeUsed=false;
+    document.getElementById("hint-btn").classList.remove("disabled-button");
+    document.getElementById("addtime-btn").classList.remove("disabled-button");
+    updateTopBar();
+    showEquation();
+    startTimer();
 }
 
 function showEquation(){
-    document.getElementById("equation").innerHTML=currentEquation.lines.join("<br>");
+    document.getElementById("equation").innerHTML=currentEquation.lines.join("<br>");
 }
 
-// Timer
+// Timer (بدون تغییر)
 function startTimer(){
-    clearInterval(timerInterval);
-    timerInterval=setInterval(()=>{
-        timer--;
-        updateTopBar();
-        if(timer<=0){
-            clearInterval(timerInterval);
-            gameOver(true);
-        }
-    },1000);
+    clearInterval(timerInterval);
+    timerInterval=setInterval(()=>{
+        timer--;
+        updateTopBar();
+        if(timer<=0){
+            clearInterval(timerInterval);
+            gameOver(true);
+        }
+    },1000);
 }
 
 function updateTopBar(){
-    document.getElementById("time").innerText="⏱ Time: "+timer;
-    document.getElementById("lives").innerText="❤️".repeat(lives);
-    document.getElementById("score").innerText="⭐ Score: "+score;
-    document.getElementById("level-num").innerText="📈 Level: "+(currentLevel+1);
+    document.getElementById("time").innerText="⏱ Time: "+timer;
+    document.getElementById("lives").innerText="❤️".repeat(lives);
+    document.getElementById("score").innerText="⭐ Score: "+score;
+    document.getElementById("level-num").innerText="📈 Level: "+(currentLevel+1);
 }
 
-// Answer check
+// Answer check (اصلاح‌شده برای رفتن به منوی انتخاب مراحل)
 function checkAnswer(){
-    let user=Number(document.getElementById("answer").value);
-    document.getElementById("answer").value='';
-    if(user===currentEquation.answer){
-        score++;
-        updateTopBar();
-        playCorrect();
-        showParticles("🎉");
-        setTimeout(()=> { alert("🎉 Correct!");     alert("🎉 Correct!"); 
-    openSeason(currentSeason); }, 500);
-    } else{
-        lives--;
-        updateTopBar();
-        playWrong();
-        showParticles("❌");
-        if(lives<=0) gameOver(false);
-        else alert("❌ Wrong answer. Lives left: "+lives);
-    }
+    let user=Number(document.getElementById("answer").value);
+    document.getElementById("answer").value='';
+    
+    // توقف زمان‌سنج بلافاصله
+    clearInterval(timerInterval); 
+
+    if(user===currentEquation.answer){
+        score++;
+        updateTopBar();
+        playCorrect();
+        showParticles("🎉");
+        
+        setTimeout(()=> { 
+            alert("🎉 Correct!");
+            // تغییر صفحه: رفتن به منوی انتخاب مراحل
+            document.getElementById("game-screen").classList.remove("active");
+            document.getElementById("season-screen").classList.add("active");
+            // به‌روزرسانی لیست مراحل (برای باز شدن مرحله بعدی)
+            openSeason(currentSeason);
+        }, 500);
+        
+    } else{
+        lives--;
+        updateTopBar();
+        playWrong();
+        showParticles("❌");
+        if(lives<=0) gameOver(false);
+        else {
+            // اگر اشتباه بود، زمان‌سنج را دوباره فعال کن
+            startTimer(); 
+            alert("❌ Wrong answer. Lives left: "+lives);
+        }
+    }
 }
 
-// Game Over
+// Game Over (بدون تغییر)
 function gameOver(isTimeOut){
-    playGameOver();
-    showParticles("💀");
-    clearInterval(timerInterval);
-    setTimeout(()=> {
-        alert(isTimeOut?"💀 Time's up!":"💀 No lives left!");
-        backToMenu();
-    }, 500);
+    playGameOver();
+    showParticles("💀");
+    clearInterval(timerInterval);
+    setTimeout(()=> {
+        alert(isTimeOut?"💀 Time's up!":"💀 No lives left!");
+        backToMenu();
+    }, 500);
 }
 
-// Hint and AddTime
+// Hint and AddTime (بدون تغییر)
 function simulateAd(callback){
-    alert("🎬 Watch ad to unlock feature...");
-    setTimeout(callback,500); // simulate ad
+    alert("🎬 Watch ad to unlock feature...");
+    setTimeout(callback,500); // simulate ad
 }
 
 function useHint(){
-    if(hintUsed) return;
-    simulateAd(()=>{
-        const fruitsInEquation=Object.keys(currentEquation.fruitValues);
-        const randomFruit=fruitsInEquation[Math.floor(Math.random()*fruitsInEquation.length)];
-        const value=currentEquation.fruitValues[randomFruit];
-        alert(`💡 Hint: ${randomFruit} = ${value}`);
-        hintUsed=true;
-        document.getElementById("hint-btn").classList.add("disabled-button");
-    });
+    if(hintUsed) return;
+    simulateAd(()=>{
+        const fruitsInEquation=Object.keys(currentEquation.fruitValues);
+        const randomFruit=fruitsInEquation[Math.floor(Math.random()*fruitsInEquation.length)];
+        const value=currentEquation.fruitValues[randomFruit];
+        alert(`💡 Hint: ${randomFruit} = ${value}`);
+        hintUsed=true;
+        document.getElementById("hint-btn").classList.add("disabled-button");
+    });
 }
 
 function useAddTime(){
-    if(addTimeUsed) return;
-    simulateAd(()=>{
-        timer+=600;
-        updateTopBar();
-        addTimeUsed=true;
-        document.getElementById("addtime-btn").classList.add("disabled-button");
-    });
+    if(addTimeUsed) return;
+    simulateAd(()=>{
+        timer+=600;
+        updateTopBar();
+        addTimeUsed=true;
+        document.getElementById("addtime-btn").classList.add("disabled-button");
+    });
 }
 
-// Particles
+// Particles (بدون تغییر)
 function showParticles(icon){
-    for(let i=0;i<40;i++){
-        const particle=document.createElement("div");
-        particle.className="particle";
-        particle.innerText=icon;
-        particle.style.left=(Math.random()*80 +10)+"%";
-        particle.style.top="80%";
-        particle.style.fontSize=(Math.random()*24 +16)+"px";
-        document.body.appendChild(particle);
-        setTimeout(()=> particle.remove(),4000);
-    }
+    for(let i=0;i<40;i++){
+        const particle=document.createElement("div");
+        particle.className="particle";
+        particle.innerText=icon;
+        particle.style.left=(Math.random()*80 +10)+"%";
+        particle.style.top="80%";
+        particle.style.fontSize=(Math.random()*24 +16)+"px";
+        document.body.appendChild(particle);
+        setTimeout(()=> particle.remove(),4000);
+    }
 }
 
-// Sounds
+// Sounds (بدون تغییر)
 function playCorrect(){
-    const audio=document.getElementById("correct-sound");
-    audio.currentTime=0;
-    audio.play().catch(e=>console.log(e));
+    const audio=document.getElementById("correct-sound");
+    audio.currentTime=0;
+    audio.play().catch(e=>console.log(e));
 }
 function playWrong(){
-    const audio=document.getElementById("wrong-sound");
-    audio.currentTime=0;
-    audio.play().catch(e=>console.log(e));
+    const audio=document.getElementById("wrong-sound");
+    audio.currentTime=0;
+    audio.play().catch(e=>console.log(e));
 }
 function playGameOver(){
-    const audio=document.getElementById("gameover-sound");
-    audio.currentTime=0;
-    audio.play().catch(e=>console.log(e));
+    const audio=document.getElementById("gameover-sound");
+    audio.currentTime=0;
+    audio.play().catch(e=>console.log(e));
 }
 
-// Init
+// Init (بدون تغییر)
 initMenu();
 </script>
 </body>
 </html>
-
-
-
