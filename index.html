@@ -12,7 +12,7 @@ body {
   justify-content:center;
   align-items:center;
   height:100vh;
-  zoom:1.2; /* ✅ بزرگتر کردن همه عناصر */
+  zoom:1.3; /* ✅ الان 30٪ بزرگ‌تر از حالت اولیه */
 }
 
 .screen { display:none; width: 90%; max-width: 600px; text-align:center; }
@@ -48,10 +48,15 @@ h1,h2,h3 { margin:10px 0; color:#333; }
 
 #hints button { 
   margin:5px; padding:10px 25px; font-size:18px; 
-  background-color:#f44336; color:white; border:none; border-radius:8px; 
+  color:white; border:none; border-radius:8px; 
   cursor:pointer; transition:0.2s; 
 }
-#hints button:hover { background-color:#d7372a; }
+
+/* ✅ تغییر رنگ دکمه‌ها */
+#hint-btn { background-color:#f44336; } /* قرمز */
+#hint-btn:hover { background-color:#d7372a; }
+#addtime-btn { background-color:#4CAF50; } /* ✅ سبز */
+#addtime-btn:hover { background-color:#3e8e41; }
 
 .disabled-button { opacity:0.4; cursor:not-allowed; pointer-events:none; }
 
@@ -89,7 +94,7 @@ h1,h2,h3 { margin:10px 0; color:#333; }
 </head>
 <body>
 
-<!-- ✅ صفحه منو -->
+<!-- صفحه منو -->
 <div id="menu-screen" class="screen active">
   <h1>🍎 Fruit Math Game 🍉</h1>
   <h3>Seasons</h3>
@@ -97,7 +102,7 @@ h1,h2,h3 { margin:10px 0; color:#333; }
   <button class="donate-btn" onclick="donate()">❤️ Donate</button>
 </div>
 
-<!-- ✅ صفحه فصل‌ها -->
+<!-- صفحه فصل‌ها -->
 <div id="season-screen" class="screen">
   <h2 id="season-title"></h2>
   <div id="levels"></div>
@@ -106,7 +111,7 @@ h1,h2,h3 { margin:10px 0; color:#333; }
   <button class="donate-btn" onclick="donate()">❤️ Donate</button>
 </div>
 
-<!-- ✅ صفحه بازی -->
+<!-- صفحه بازی -->
 <div id="game-screen" class="screen">
   <div id="top-bar">
     <span id="time">⏱ Time: 60</span>
@@ -117,8 +122,8 @@ h1,h2,h3 { margin:10px 0; color:#333; }
   <div id="game-container">
     <div id="equation"></div>
     <div id="answers">
-      <!-- ✅ اضافه شدن دکمه منفی -->
-      <input type="text" id="answer" inputmode="decimal" pattern="^-?[0-9]*$" placeholder="Answer">
+      <!-- ✅ اجازه‌ی وارد کردن عدد منفی -->
+      <input type="text" id="answer" inputmode="numeric" pattern="^-?[0-9]*$" placeholder="Answer">
       <button onclick="checkAnswer()">✔️</button>
     </div>
     <div id="hints">
@@ -129,9 +134,10 @@ h1,h2,h3 { margin:10px 0; color:#333; }
   <button class="donate-btn" onclick="donate()">❤️ Donate</button>
 </div>
 
-<audio id="correct-sound" src="https://github.com/saeedt70/mathgame/edit/main/win.mp3"></audio>
-<audio id="wrong-sound" src="https://github.com/saeedt70/mathgame/edit/main/lose.mp3"></audio>
-<audio id="gameover-sound" src="https://github.com/saeedt70/mathgame/edit/main/gameover.mp3"></audio>
+<!-- ✅ صداها از لینک مستقیم فایل (نه صفحه GitHub) -->
+<audio id="correct-sound" src="https://raw.githubusercontent.com/saeedt70/mathgame/main/win.mp3"></audio>
+<audio id="wrong-sound" src="https://raw.githubusercontent.com/saeedt70/mathgame/main/lose.mp3"></audio>
+<audio id="gameover-sound" src="https://raw.githubusercontent.com/saeedt70/mathgame/main/gameover.mp3"></audio>
 
 <script>
 const fruits = ["🍎","🍌","🍉","🍇","🍍", "🍓"];
@@ -140,12 +146,11 @@ let currentLevel = 0, currentSeason = 0;
 let currentEquation, timerInterval;
 let hintUsed=false, addTimeUsed=false;
 
-// ✅ دکمه دونیت
 function donate(){
-  window.open("https://www.buymeacoffee.com/yourpage","_blank");
+  window.open("https://buymeacoffee.com/","_blank");
 }
 
-// Generate levels
+// تولید مراحل
 function generateLevels(count){
     const generatedLevels=[];
     for(let i=0;i<count;i++){
@@ -171,6 +176,7 @@ function generateLevels(count){
 }
 const levels=generateLevels(100);
 
+// منو
 function initMenu(){
     let seasonsDiv=document.getElementById("seasons");
     seasonsDiv.innerHTML='';
@@ -321,20 +327,21 @@ function showParticles(icon){
     }
 }
 
+/* ✅ صداها با لینک مستقیم و آماده پخش */
 function playCorrect(){
     const audio=document.getElementById("correct-sound");
     audio.currentTime=0;
-    audio.play().catch(e=>console.log(e));
+    audio.play().catch(()=>{}); 
 }
 function playWrong(){
     const audio=document.getElementById("wrong-sound");
     audio.currentTime=0;
-    audio.play().catch(e=>console.log(e));
+    audio.play().catch(()=>{});
 }
 function playGameOver(){
     const audio=document.getElementById("gameover-sound");
     audio.currentTime=0;
-    audio.play().catch(e=>console.log(e));
+    audio.play().catch(()=>{});
 }
 
 initMenu();
