@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سایت نمونه با تبلیغات</title>
+    <style>
+        body {
+            font-family: Tahoma, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f5f5f5;
+        }
+        #mediaad-xy3Za {
+            width: 300px;
+            height: 250px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>به سایت نمونه خوش آمدید</h1>
+    <p>اینجا تبلیغ شما نمایش داده می‌شود:</p>
+
+    <!-- جایگاه تبلیغ -->
+    <div id="mediaad-xy3Za"></div>
+
+    <!-- اسکریپت تبلیغ -->
+    <script type="text/javascript">
+        (function (){
+            const head = document.getElementsByTagName("head")[0];
+            const script = document.createElement("script");
+            script.type = "text/javascript";
+            script.async = true;
+            script.src = "https://s1.mediaad.org/serve/saeedt70.github.io/loader.js";
+            head.appendChild(script);
+        })();
+    </script>
+</body>
+</html>
