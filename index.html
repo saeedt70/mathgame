@@ -349,3 +349,39 @@ initMenu();
 </body>
 </html>
 
+<script>
+// غیرفعال کردن راست کلیک
+document.addEventListener('contextmenu', function(e){
+    e.preventDefault();
+    alert("⚠️ راست کلیک غیرفعال است!");
+});
+
+// غیرفعال کردن انتخاب متن (Selection)
+document.addEventListener('selectstart', function(e){
+    e.preventDefault();
+});
+
+// غیرفعال کردن کپی (Ctrl+C / Cmd+C)
+document.addEventListener('copy', function(e){
+    e.preventDefault();
+    alert("⚠️ کپی کردن غیرفعال است!");
+});
+
+// غیرفعال کردن کلیدهای Ctrl+S, Ctrl+U, Ctrl+Shift+I و غیره
+document.addEventListener('keydown', function(e){
+    if (e.ctrlKey && (e.key === 's' || e.key === 'S' || e.key === 'u' || e.key === 'U')) {
+        e.preventDefault();
+        
+    }
+    // Ctrl+Shift+I یا F12 (DevTools)
+    if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+        e.preventDefault();
+        
+    }
+    if(e.key === 'F12'){
+        e.preventDefault();
+        
+    }
+});
+</script>
+
