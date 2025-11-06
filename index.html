@@ -12,62 +12,98 @@ body {
   justify-content:center;
   align-items:center;
   height:100vh;
-  zoom:1.3; /* ✅ الان 30٪ بزرگ‌تر از حالت اولیه */
 }
 
 .screen { display:none; width: 90%; max-width: 600px; text-align:center; }
 .active { display:block; }
 h1,h2,h3 { margin:10px 0; color:#333; }
 
+/* دکمه‌های فصل و مرحله */
 .level-button { 
-  margin:5px; padding:12px 18px; font-size:18px; 
-  cursor:pointer; background-color:#4CAF50; color:white; 
-  border:none; border-radius:8px; transition:0.2s; 
+  margin:5px; 
+  padding:16px 22px; /* بزرگ‌تر */
+  font-size:22px; /* بزرگ‌تر */
+  cursor:pointer; 
+  background-color:#4CAF50; 
+  color:white; 
+  border:none; 
+  border-radius:8px; 
+  transition:0.2s; 
 }
 .level-button:hover { background-color:#45a049; }
 .locked { opacity:0.4; cursor:not-allowed; background-color:#999; }
 
-#game-container { margin-top:20px; }
+/* فقط عناصر بازی بزرگ‌تر شده */
+#game-container {
+  margin-top:20px;
+  transform: scale(1.3); /* 30% بزرگ‌تر */
+  transform-origin: top center;
+}
 
 #equation { 
-  font-size:28px; line-height:1.5; background:#fff; padding:20px; 
-  border-radius:12px; display:inline-block; 
+  font-size:28px; 
+  line-height:1.5; 
+  background:#fff; 
+  padding:20px; 
+  border-radius:12px; 
+  display:inline-block; 
   box-shadow:0 4px 12px rgba(0,0,0,0.2); 
 }
 
 #answers input { 
-  font-size:24px; width:140px; text-align:center; padding:10px; 
-  border:2px solid #ddd; border-radius:8px; 
+  font-size:32px; /* بزرگ‌تر */
+  width:180px; 
+  text-align:center; 
+  padding:14px; 
+  border:2px solid #ddd; 
+  border-radius:8px; 
 }
 #answers button { 
-  font-size:24px; padding:10px 20px; margin-left:10px; 
-  background-color:#008CBA; color:white; border:none; border-radius:8px; 
-  cursor:pointer; transition:0.2s; 
+  font-size:28px; /* بزرگ‌تر */
+  padding:12px 28px; 
+  margin-left:10px; 
+  background-color:#008CBA; 
+  color:white; 
+  border:none; 
+  border-radius:8px; 
+  cursor:pointer; 
+  transition:0.2s; 
 }
 #answers button:hover { background-color:#0079a1; }
 
 #hints button { 
-  margin:5px; padding:10px 25px; font-size:18px; 
-  color:white; border:none; border-radius:8px; 
-  cursor:pointer; transition:0.2s; 
+  margin:5px; 
+  padding:12px 28px; 
+  font-size:24px; 
+  color:white; 
+  border:none; 
+  border-radius:8px; 
+  cursor:pointer; 
+  transition:0.2s; 
 }
 
 /* ✅ تغییر رنگ دکمه‌ها */
 #hint-btn { background-color:#f44336; } /* قرمز */
 #hint-btn:hover { background-color:#d7372a; }
-#addtime-btn { background-color:#4CAF50; } /* ✅ سبز */
+#addtime-btn { background-color:#4CAF50; } /* سبز */
 #addtime-btn:hover { background-color:#3e8e41; }
 
 .disabled-button { opacity:0.4; cursor:not-allowed; pointer-events:none; }
 
 #top-bar { 
-  display:flex; justify-content:space-around; font-size:18px; 
-  margin-top:20px; background:#333; color:white; 
-  padding:12px 0; border-radius:8px; 
+  display:flex; 
+  justify-content:space-around; 
+  font-size:24px; /* بزرگ‌تر */
+  margin-top:20px; 
+  background:#333; 
+  color:white; 
+  padding:16px 0; 
+  border-radius:8px; 
 }
 
 .particle { 
-  position:absolute; font-size:24px; 
+  position:absolute; 
+  font-size:24px; 
   animation: rise 1s ease-out forwards; 
 }
 
@@ -75,21 +111,6 @@ h1,h2,h3 { margin:10px 0; color:#333; }
   0% { opacity:1; transform: translateY(0) scale(1); } 
   100% { opacity:0; transform: translateY(-100px) scale(1.5); } 
 }
-
-/* ✅ دکمه دونیت */
-.donate-btn {
-  display:inline-block;
-  margin-top:15px;
-  padding:10px 25px;
-  font-size:18px;
-  background-color:#ff9800;
-  color:white;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-  transition:0.2s;
-}
-.donate-btn:hover { background-color:#e68900; }
 </style>
 </head>
 <body>
@@ -99,7 +120,6 @@ h1,h2,h3 { margin:10px 0; color:#333; }
   <h1>🍎 Fruit Math Game 🍉</h1>
   <h3>Seasons</h3>
   <div id="seasons"></div>
-  <button class="donate-btn" onclick="donate()">❤️ Donate</button>
 </div>
 
 <!-- صفحه فصل‌ها -->
@@ -108,7 +128,6 @@ h1,h2,h3 { margin:10px 0; color:#333; }
   <div id="levels"></div>
   <button class="level-button" style="background-color:#555;" onclick="backToMenu()">🔙 Back</button>
   <br>
-  <button class="donate-btn" onclick="donate()">❤️ Donate</button>
 </div>
 
 <!-- صفحه بازی -->
@@ -122,7 +141,6 @@ h1,h2,h3 { margin:10px 0; color:#333; }
   <div id="game-container">
     <div id="equation"></div>
     <div id="answers">
-      <!-- ✅ اجازه‌ی وارد کردن عدد منفی -->
       <input type="text" id="answer" inputmode="numeric" pattern="^-?[0-9]*$" placeholder="Answer">
       <button onclick="checkAnswer()">✔️</button>
     </div>
@@ -131,10 +149,9 @@ h1,h2,h3 { margin:10px 0; color:#333; }
       <button id="addtime-btn" onclick="useAddTime()">⏱ Add Time</button>
     </div>
   </div>
-  <button class="donate-btn" onclick="donate()">❤️ Donate</button>
 </div>
 
-<!-- ✅ صداها از لینک مستقیم فایل (نه صفحه GitHub) -->
+<!-- صداها -->
 <audio id="correct-sound" src="https://raw.githubusercontent.com/saeedt70/mathgame/main/win.mp3"></audio>
 <audio id="wrong-sound" src="https://raw.githubusercontent.com/saeedt70/mathgame/main/lose.mp3"></audio>
 <audio id="gameover-sound" src="https://raw.githubusercontent.com/saeedt70/mathgame/main/gameover.mp3"></audio>
@@ -327,7 +344,6 @@ function showParticles(icon){
     }
 }
 
-/* ✅ صداها با لینک مستقیم و آماده پخش */
 function playCorrect(){
     const audio=document.getElementById("correct-sound");
     audio.currentTime=0;
@@ -346,44 +362,19 @@ function playGameOver(){
 
 initMenu();
 </script>
-</body>
-</html>
 
 <script>
-// غیرفعال کردن راست کلیک
-document.addEventListener('contextmenu', function(e){
-    e.preventDefault();
-   
-});
-
-// غیرفعال کردن انتخاب متن (Selection)
-document.addEventListener('selectstart', function(e){
-    e.preventDefault();
-});
-
-// غیرفعال کردن کپی (Ctrl+C / Cmd+C)
-document.addEventListener('copy', function(e){
-    e.preventDefault();
-    
-});
-
-// غیرفعال کردن کلیدهای Ctrl+S, Ctrl+U, Ctrl+Shift+I و غیره
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('selectstart', e => e.preventDefault());
+document.addEventListener('copy', e => e.preventDefault());
 document.addEventListener('keydown', function(e){
-    if (e.ctrlKey && (e.key === 's' || e.key === 'S' || e.key === 'u' || e.key === 'U')) {
-        e.preventDefault();
-        
-    }
-    // Ctrl+Shift+I یا F12 (DevTools)
-    if (e.ctrlKey && e.shiftKey && e.key === 'I'|| e.key === 'i') {
-        e.preventDefault();
-        
-    }
-    if(e.key === 'F12'){
-        e.preventDefault();
-        
-    }
+    if (e.ctrlKey && (e.key === 's' || e.key === 'S' || e.key === 'u' || e.key === 'U')) e.preventDefault();
+    if (e.ctrlKey && e.shiftKey && (e.key === 'I'|| e.key === 'i')) e.preventDefault();
+    if(e.key === 'F12') e.preventDefault();
 });
 </script>
 
+<script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="aigame" data-description="Support me on Buy me a coffee!" data-message="Donate" data-color="#FF813F" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
 
-
+</body>
+</html>
