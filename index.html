@@ -1,6 +1,12 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بازی تمرین ریاضی</title>
 <style>
 :root {
-  --scale: 1.25; /* ← اینجا عدد بزرگ‌نمایی کل رو تعیین می‌کنی */
+  --scale: 1.25; /* 👈 این عدد اندازه کل عناصر رو کنترل می‌کنه */
 }
 
 body {
@@ -14,6 +20,8 @@ body {
   justify-content: center;
   height: 100vh;
   font-size: calc(16px * var(--scale));
+  color: white;
+  overflow: hidden;
 }
 
 #top-bar {
@@ -28,6 +36,13 @@ body {
   margin-bottom: calc(20px * var(--scale));
 }
 
+#level-select {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: calc(10px * var(--scale));
+}
+
 .level-button {
   margin: calc(6px * var(--scale));
   padding: calc(12px * var(--scale)) calc(18px * var(--scale));
@@ -36,10 +51,19 @@ body {
   border: none;
   cursor: pointer;
   background-color: #fff;
-  transition: transform 0.2s;
+  transition: transform 0.2s, background 0.3s;
+  color: #333;
 }
 .level-button:hover {
   transform: scale(1.05);
+  background-color: #e0e0e0;
+}
+
+#game {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(15px * var(--scale));
 }
 
 #equation {
@@ -47,8 +71,15 @@ body {
   padding: calc(20px * var(--scale));
   border-radius: calc(12px * var(--scale));
   background: #fff;
-  margin-bottom: calc(20px * var(--scale));
+  color: #333;
   text-align: center;
+}
+
+#answers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: calc(10px * var(--scale));
 }
 
 #answers input {
@@ -58,6 +89,11 @@ body {
   border-radius: calc(8px * var(--scale));
   text-align: center;
   border: 2px solid #3b82f6;
+  outline: none;
+  direction: ltr;
+}
+#answers input:focus {
+  border-color: #9333ea;
 }
 
 #answers button {
@@ -68,7 +104,16 @@ body {
   cursor: pointer;
   background-color: #3b82f6;
   color: white;
-  margin-left: calc(10px * var(--scale));
+  transition: background 0.3s;
+}
+#answers button:hover {
+  background-color: #2563eb;
+}
+
+#hints {
+  display: flex;
+  gap: calc(15px * var(--scale));
+  margin-top: calc(10px * var(--scale));
 }
 
 #hints button {
@@ -79,6 +124,16 @@ body {
   color: white;
   border: none;
   cursor: pointer;
+  transition: background 0.3s;
+}
+#hints button:hover {
+  background-color: #7e22ce;
+}
+
+#message {
+  font-size: calc(20px * var(--scale));
+  margin-top: calc(10px * var(--scale));
+  font-weight: bold;
 }
 
 .particle {
@@ -92,3 +147,102 @@ body {
   100% { transform: translateY(-100px); opacity: 0; }
 }
 </style>
+</head>
+
+<body>
+  <div id="top-bar">🎯 انتخاب مرحله تمرین ریاضی</div>
+  
+  <div id="level-select">
+    <button class="level-button" data-level="1">مرحله ۱</button>
+    <button class="level-button" data-level="2">مرحله ۲</button>
+    <button class="level-button" data-level="3">مرحله ۳</button>
+    <button class="level-button" data-level="4">مرحله ۴</button>
+  </div>
+
+  <div id="game">
+    <div id="equation"></div>
+    <div id="answers">
+      <input id="answer" type="text" inputmode="numeric" pattern="-?[0-9]*" placeholder="پاسخ">
+      <button id="check">بررسی</button>
+    </div>
+    <div id="hints">
+      <button id="hint">راهنمایی</button>
+      <button id="add-time">زمان بیشتر ⏰</button>
+    </div>
+    <div id="message"></div>
+  </div>
+
+<script>
+const levels = {
+  1: { min: 1, max: 10 },
+  2: { min: 10, max: 50 },
+  3: { min: 50, max: 100 },
+  4: { min: -50, max: 100 }
+};
+
+let currentLevel = 1;
+let correctAnswer = 0;
+
+document.querySelectorAll('.level-button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentLevel = btn.dataset.level;
+    document.getElementById('level-select').style.display = 'none';
+    document.getElementById('top-bar').textContent = `مرحله ${currentLevel}`;
+    document.getElementById('game').style.display = 'flex';
+    newEquation();
+  });
+});
+
+function newEquation() {
+  const { min, max } = levels[currentLevel];
+  const a = Math.floor(Math.random() * (max - min)) + min;
+  const b = Math.floor(Math.random() * (max - min)) + min;
+  const ops = ['+', '-', '×'];
+  const op = ops[Math.floor(Math.random() * ops.length)];
+  correctAnswer = op === '+' ? a + b : op === '-' ? a - b : a * b;
+  document.getElementById('equation').textContent = `${a} ${op} ${b} = ?`;
+  document.getElementById('answer').value = '';
+  document.getElementById('message').textContent = '';
+}
+
+document.getElementById('check').addEventListener('click', () => {
+  const answer = parseFloat(document.getElementById('answer').value);
+  const msg = document.getElementById('message');
+  if (isNaN(answer)) {
+    msg.textContent = 'لطفاً عدد وارد کن!';
+    msg.style.color = 'yellow';
+  } else if (answer === correctAnswer) {
+    msg.textContent = 'آفرین! درست گفتی 🎉';
+    msg.style.color = 'lime';
+    createParticles();
+    setTimeout(newEquation, 1000);
+  } else {
+    msg.textContent = 'اشتباه شد 😅 دوباره تلاش کن!';
+    msg.style.color = 'red';
+  }
+});
+
+document.getElementById('hint').addEventListener('click', () => {
+  const msg = document.getElementById('message');
+  msg.textContent = `👀 جواب بین ${correctAnswer - 3} تا ${correctAnswer + 3} هست`;
+  msg.style.color = 'orange';
+});
+
+document.getElementById('add-time').addEventListener('click', () => {
+  alert('⏰ زمان اضافه شد (در نسخه‌های بعدی فعال می‌شود)');
+});
+
+function createParticles() {
+  for (let i = 0; i < 10; i++) {
+    const p = document.createElement('div');
+    p.textContent = ['✨', '🎈', '💫', '⭐'][Math.floor(Math.random() * 4)];
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.top = '50vh';
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 1000);
+  }
+}
+</script>
+</body>
+</html>
