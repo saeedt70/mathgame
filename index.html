@@ -147,7 +147,7 @@ let currentEquation, timerInterval;
 let hintUsed=false, addTimeUsed=false;
 
 function donate(){
-  window.open("https://buymeacoffee.com/","aigame");
+  window.open("https://buymeacoffee.com/aigame");
 }
 
 // تولید مراحل
@@ -353,7 +353,7 @@ initMenu();
 // غیرفعال کردن راست کلیک
 document.addEventListener('contextmenu', function(e){
     e.preventDefault();
-    alert("⚠️ راست کلیک غیرفعال است!");
+   
 });
 
 // غیرفعال کردن انتخاب متن (Selection)
@@ -364,7 +364,7 @@ document.addEventListener('selectstart', function(e){
 // غیرفعال کردن کپی (Ctrl+C / Cmd+C)
 document.addEventListener('copy', function(e){
     e.preventDefault();
-    alert("⚠️ کپی کردن غیرفعال است!");
+    
 });
 
 // غیرفعال کردن کلیدهای Ctrl+S, Ctrl+U, Ctrl+Shift+I و غیره
@@ -384,4 +384,5 @@ document.addEventListener('keydown', function(e){
     }
 });
 </script>
+
 
