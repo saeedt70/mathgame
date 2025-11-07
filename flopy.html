@@ -1,45 +1,344 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سایت نمونه با تبلیغات</title>
+    <title>Flappy Emoji 🐦 (ULTRA EASY)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* CSS برای ابعاد بزرگ (400x600) و ظاهر خوب */
         body {
-            font-family: Tahoma, sans-serif;
-            text-align: center;
-            padding: 50px;
-            background-color: #f5f5f5;
-        }
-        #mediaad-xy3Za {
-            width: 300px;
-            height: 250px;
-            margin: 20px auto;
-            border: 1px solid #ccc;
-            background-color: #fff;
+            margin: 0;
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden; 
+            position: relative;
+        }
+
+        .game-container {
+            width: 400px; 
+            height: 600px; 
+            background: linear-gradient(to bottom, #7DDFFC, #B4FCF8);
+            border: 5px solid #333;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .bird {
+            position: absolute;
+            font-size: 50px; 
+            left: 70px; 
+            top: 250px; 
+            transform: rotate(0deg); 
+            transition: transform 0.1s ease-out; 
+            z-index: 10;
+        }
+
+        .pipe {
+            position: absolute;
+            width: 80px; 
+            background: transparent;
+            left: 400px; 
+            font-size: 80px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 5;
+        }
+
+        .pipe .segment {
+            background-color: #74B72E; 
+            border: 2px solid #589A00;
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .score {
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2.5em; 
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            z-index: 20;
+        }
+
+        .game-over-screen {
+            display: none; 
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 1.8em; 
+            text-align: center;
+            z-index: 25;
+            border-radius: 10px;
+        }
+
+        .game-over-screen h2 {
+            color: #ffcc00;
+            margin-bottom: 15px;
+        }
+        
+        .start-button, .restart-button {
+            background: linear-gradient(135deg, #ffcc00, #ffb300);
+            color: #222;
+            border: none;
+            padding: 15px 30px; 
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.2rem; 
+            letter-spacing: 0.3px;
+            transition: transform 0.2s, box-shadow 0.3s, background 0.3s;
+            margin-top: 25px; 
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: background 0.3s;
+            z-index: 30;
+        }
+
+        @media (max-width: 500px) { 
+            .game-container {
+                width: 95vw; 
+                height: calc(95vw * 1.5); 
+            }
         }
     </style>
 </head>
 <body>
-    <h1>به سایت نمونه خوش آمدید</h1>
-    <p>اینجا تبلیغ شما نمایش داده می‌شود:</p>
+    <button class="back-button" onclick="window.location.href='index.html'">⬅️ بازگشت به صفحه اصلی</button>
 
-    <!-- جایگاه تبلیغ -->
-    <div id="mediaad-xy3Za"></div>
+    <div class="game-container" id="game-container">
+        <div class="bird" id="bird">🐦</div>
+        <div class="score" id="score">0</div>
 
-    <!-- اسکریپت تبلیغ -->
-    <script type="text/javascript">
-        (function (){
-            const head = document.getElementsByTagName("head")[0];
-            const script = document.createElement("script");
-            script.type = "text/javascript";
-            script.async = true;
-            script.src = "https://s1.mediaad.org/serve/saeedt70.github.io/loader.js";
-            head.appendChild(script);
-        })();
+        <div class="instruction-screen" id="instruction-screen">
+            <h2>به Flappy Emoji خوش آمدید!</h2>
+         
+            <button class="start-button" id="start-game-button">شروع بازی</button>
+        </div>
+
+        <div class="game-over-screen" id="game-over-screen">
+            <h2>بازی تمام شد!</h2>
+            <p>امتیاز شما: <span id="final-score">0</span></p>
+            <button class="restart-button" id="restart-game-button">بازی دوباره</button>
+        </div>
+    </div>
+
+    <script>
+        const gameContainer = document.getElementById('game-container');
+        const bird = document.getElementById('bird');
+        const scoreDisplay = document.getElementById('score');
+        const instructionScreen = document.getElementById('instruction-screen');
+        const startGameButton = document.getElementById('start-game-button');
+        const gameOverScreen = document.getElementById('game-over-screen');
+        const finalScoreDisplay = document.getElementById('final-score');
+        const restartGameButton = document.getElementById('restart-game-button');
+
+        // **پارامترهای ULTRA EASY**
+        let birdY = 0; 
+        let velocity = 0; 
+        let gravity = 0.12; // جاذبه کمتر (سقوط خیلی آهسته‌تر)
+        let jumpStrength = -6.0; // پرش قوی‌تر
+        let pipeSpeed = 0.7; // سرعت بسیار پایین موانع
+        let pipeGap = 300; // **فاصله بسیار زیاد موانع (نصف صفحه)**
+        let pipeWidth = 80; 
+        let birdCollisionOffset = 10; 
+        let pipeSpawnTime = 3000; // لوله‌ها هر 3 ثانیه یک بار ظاهر می‌شوند
+
+        let gameInterval;
+        let pipeInterval;
+        let isGameOver = false;
+        let score = 0;
+        let gameStarted = false;
+
+        let containerHeight; 
+        let containerWidth;
+        let birdSize;
+
+        function initializeGameDimensions() {
+            containerHeight = gameContainer.clientHeight;
+            containerWidth = gameContainer.clientWidth;
+            // اگر هنوز CSS بارگذاری نشده، از یک مقدار پیش‌فرض استفاده می‌کنیم
+            try {
+                 birdSize = parseFloat(window.getComputedStyle(bird).fontSize) || 50; 
+            } catch (e) {
+                 birdSize = 50; 
+            }
+        }
+
+        function startGame() {
+            initializeGameDimensions(); 
+
+            instructionScreen.style.display = 'none';
+            gameOverScreen.style.display = 'none';
+            isGameOver = false;
+            score = 0;
+            scoreDisplay.textContent = score;
+            birdY = containerHeight / 2 - (birdSize / 2); 
+            velocity = 0;
+            
+            bird.style.top = birdY + 'px';
+            bird.style.left = '70px'; 
+            bird.style.transform = 'rotate(0deg)';
+
+            document.querySelectorAll('.pipe').forEach(pipe => pipe.remove());
+
+            gameStarted = true;
+            gameInterval = setInterval(gameLoop, 20); 
+            pipeInterval = setInterval(createPipe, pipeSpawnTime); 
+        }
+
+        function gameLoop() {
+            if (isGameOver) return;
+
+            velocity += gravity;
+            birdY += velocity;
+            bird.style.top = birdY + 'px';
+
+            bird.style.transform = `rotate(${Math.min(velocity * 2, 90)}deg)`;
+
+            // برخورد با بالا و پایین
+            if (birdY <= 0 || birdY + birdSize >= containerHeight) {
+                endGame();
+                return;
+            }
+
+            const birdX = 70; 
+            
+            document.querySelectorAll('.pipe').forEach(pipe => {
+                let pipeX = parseFloat(pipe.style.left);
+                pipeX -= pipeSpeed; 
+                pipe.style.left = pipeX + 'px';
+
+                if (pipeX + pipeWidth < 0) {
+                    pipe.remove();
+                }
+
+                // بررسی برخورد (Collision Detection)
+                if (
+                    (pipeX < birdX + birdSize - birdCollisionOffset && pipeX + pipeWidth > birdX + birdCollisionOffset)
+                ) {
+                    const topPipeHeight = pipe.children[0].clientHeight;
+                    const bottomPipeTop = containerHeight - pipe.children[1].clientHeight;
+
+                    if (
+                        (birdY + birdCollisionOffset < topPipeHeight) || 
+                        (birdY + birdSize - birdCollisionOffset > bottomPipeTop) 
+                    ) {
+                        endGame();
+                        return;
+                    }
+                }
+
+                // امتیازدهی
+                if (!pipe.dataset.scored && pipeX + pipeWidth < birdX) { 
+                    score++;
+                    scoreDisplay.textContent = score;
+                    pipe.dataset.scored = 'true'; 
+                }
+            });
+        }
+
+        function createPipe() {
+            const minHeight = 50; 
+            const gapHeight = pipeGap; 
+            const maxTopPipeHeight = containerHeight - minHeight - gapHeight;
+            const topPipeHeight = Math.floor(Math.random() * (maxTopPipeHeight - minHeight + 1)) + minHeight;
+            const bottomPipeHeight = containerHeight - topPipeHeight - gapHeight;
+
+            const pipe = document.createElement('div');
+            pipe.classList.add('pipe');
+            pipe.style.left = containerWidth + 'px'; 
+            pipe.style.width = pipeWidth + 'px'; 
+
+            const topSegment = document.createElement('div');
+            topSegment.classList.add('segment');
+            topSegment.style.height = topPipeHeight + 'px';
+            topSegment.textContent = '🚧'; 
+
+            const bottomSegment = document.createElement('div');
+            bottomSegment.classList.add('segment');
+            bottomSegment.style.height = bottomPipeHeight + 'px';
+            bottomSegment.textContent = '🚧'; 
+
+            topSegment.style.fontSize = `${Math.min(topPipeHeight, pipeWidth)}px`; 
+            bottomSegment.style.fontSize = `${Math.min(bottomPipeHeight, pipeWidth)}px`;
+
+            pipe.appendChild(topSegment);
+            pipe.appendChild(bottomSegment);
+            gameContainer.appendChild(pipe);
+        }
+
+        function flap() {
+            if (isGameOver || !gameStarted) return; 
+            velocity = jumpStrength; 
+            bird.style.transform = `rotate(-30deg)`; 
+        }
+
+        function endGame() {
+            isGameOver = true;
+            clearInterval(gameInterval);
+            clearInterval(pipeInterval);
+            finalScoreDisplay.textContent = score;
+            gameOverScreen.style.display = 'flex';
+            gameStarted = false;
+        }
+
+        // Listener ها برای سازگاری با موبایل و دسکتاپ
+        gameContainer.addEventListener('click', flap);
+        gameContainer.addEventListener('touchstart', (e) => {
+             e.preventDefault(); 
+             flap();
+        });
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' || e.key === ' ') {
+                e.preventDefault(); 
+                flap();
+            }
+        });
+
+        startGameButton.addEventListener('click', startGame);
+        restartGameButton.addEventListener('click', startGame);
+
+        // اجرای اولیه
+        instructionScreen.style.display = 'flex';
+        // مطمئن می‌شویم ابعاد اولیه درست ست شده است
+        window.onload = initializeGameDimensions;
     </script>
 </body>
 </html>
