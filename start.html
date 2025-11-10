@@ -152,9 +152,9 @@ h1,h2,h3 { margin:10px 0; color:#333; }
 </div>
 
 <!-- صداها -->
-<audio id="correct-sound" src="https://raw.githubusercontent.com/saeedt70/mathgame/main/win.mp3"></audio>
-<audio id="wrong-sound" src="https://raw.githubusercontent.com/saeedt70/mathgame/main/lose.mp3"></audio>
-<audio id="gameover-sound" src="https://raw.githubusercontent.com/saeedt70/mathgame/main/gameover.mp3"></audio>
+<audio id="correct-sound" src="win.mp3"></audio>
+<audio id="wrong-sound" src="lose.mp3"></audio>
+<audio id="gameover-sound" src="gameover.mp3"></audio>
 
 <script>
 const fruits = ["🍎","🍌","🍉","🍇","🍍", "🍓"];
@@ -390,7 +390,7 @@ document.addEventListener('keydown', function(e){
     bottom: 50px;
     left: 50px;
     background: rgba(255, 255, 255, 0.2);
-    color: #fff;
+    color: #ff9800;
     border: 2px solid #fff;
     border-radius: 30px;
     padding: 10px 18px;
@@ -462,7 +462,7 @@ document.addEventListener('keydown', function(e){
     bottom: 50px;
     left: 200px;
     background: rgba(255, 255, 255, 0.2);
-    color: #fff;
+    color: #ff9800;
     border: 2px solid #fff;
     border-radius: 30px;
     padding: 10px 18px;
@@ -492,7 +492,7 @@ document.addEventListener('keydown', function(e){
   }
   .help-content {
     background: #fff;
-    color: #222;
+    color: #ff5722;
     padding: 30px;
     border-radius: 15px;
     width: 90%;
@@ -542,10 +542,43 @@ document.addEventListener('keydown', function(e){
 </script>
 
 
+
+
+
+<!-- 🔙 Home Button -->
+<button id="homeBtn" class="home-btn">🏠 Home</button>
+
+<style>
+  /* 🎮 Home button next to Music and Help */
+  .home-btn {
+    position: fixed;
+    bottom: 50px;
+    left: 300px; /* کنار دکمه Help */
+    background: rgba(255, 255, 255, 0.2);
+    color: #ff9800;
+    border: 2px solid #fff;
+    border-radius: 30px;
+    padding: 10px 18px;
+    cursor: pointer;
+    font-size: 1rem;
+    backdrop-filter: blur(5px);
+    transition: 0.3s;
+    z-index: 1000;
+  }
+  .home-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(1.05);
+  }
+</style>
+
+<script>
+  const homeBtn = document.getElementById("homeBtn");
+  homeBtn.addEventListener("click", () => {
+    window.location.href = "index.html"; // هدایت به صفحه اصلی
+  });
+</script>
+
+
+
 </body>
 </html>
-
-
-
-
-

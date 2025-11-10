@@ -3,7 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-adsense-account" content="ca-pub-6054364228950872">
+  <meta name="description" content="Play simple and entertaining AI-powered brain games designed to boost focus, memory, and mental agility. Enjoy IQ tests, math puzzles, general knowledge quizzes, and reaction speed challenges to train your brain and improve cognitive skills.">
+  <meta name="keywords" content="AI games, brain games, brain training, IQ test games, math games, general knowledge quizzes, memory games, focus games, reaction speed games, logic puzzles, cognitive training, brain exercise, mind games, artificial intelligence games, AiGame, emojigames, brain booster, mental fitness, thinking games">
   <title>AiGame 🎮</title>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6054364228950872"
+     crossorigin="anonymous"></script>
+
   <style>
     body {
       margin: 0;
@@ -29,7 +35,6 @@
       margin-bottom: 25px;
     }
 
-    /* Navigation bar */
     .nav-bar {
       display: flex;
       justify-content: center;
@@ -55,7 +60,6 @@
       box-shadow: 0 4px 15px rgba(255, 204, 0, 0.4);
     }
 
-    /* Modal styles */
     .modal {
       display: none;
       position: fixed;
@@ -103,7 +107,6 @@
       background: #ff6666;
     }
 
-    /* Game section */
     .slider {
       width: 45%;
       max-width: 400px;
@@ -111,11 +114,15 @@
       border-radius: 15px;
       overflow: hidden;
       box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+      text-align: center;
     }
 
     .slides img {
-      width: 100%;
+      width: auto;
+      height: auto;
+      max-width: 100%;
       display: block;
+      margin: 0 auto;
     }
 
     .start-btn {
@@ -167,7 +174,11 @@
     }
 
     .game-card img {
-      width: 100%;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      display: block;
+      margin: 0 auto;
       border-radius: 10px;
     }
 
@@ -188,6 +199,29 @@
       border-radius: 10px;
     }
 
+    .ads img {
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      display: inline-block;
+    }
+
+    /* Floating 300x250 ad */
+    .floating-ad {
+      position: fixed;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      z-index: 1000;
+    }
+
+    .floating-ad img {
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      display: block;
+    }
+
     footer {
       text-align: center;
       padding: 20px;
@@ -206,6 +240,13 @@
       .nav-btn {
         width: 200px;
       }
+      .floating-ad {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        margin: 20px auto;
+      }
     }
   </style>
 </head>
@@ -220,68 +261,25 @@
       <button class="nav-btn" onclick="openModal('contactModal')">Contact Us</button>
       <button class="nav-btn" onclick="openModal('joinModal')">Join & Collaboration</button>
       <button class="nav-btn" onclick="openModal('rulesModal')">Rules & Copyright</button>
+      <button class="nav-btn" onclick="window.location.href='blog.html'">Blog</button>
+      <button class="nav-btn" onclick="window.location.href='shop.html'">Shop</button>
     </div>
   </header>
 
-  <!-- About Modal -->
-  <div id="aboutModal" class="modal">
-    <div class="modal-content">
-      <h2>About AiGame</h2>
-      <p>
-        AiGame is a creative team of developers passionate about turning simple and fun gamification concepts into 
-        lightweight, smart, and entertaining AI-powered games.  
-        Our games are not just for fun — they also help train your brain and boost your cognitive performance in engaging ways.  
-        Each game is designed with simplicity, creativity, and innovation in mind.
-      </p>
-      <button class="close-btn" onclick="closeModal('aboutModal')">Close</button>
-    </div>
-  </div>
+  <!-- Floating 300x250 ad -->
+  <div class="floating-ad">
 
-  <!-- Contact Modal -->
-  <div id="contactModal" class="modal">
-    <div class="modal-content">
-      <h2>Contact Us</h2>
-      <p>If you have any questions, suggestions, or just want to say hi — feel free to reach out via email:</p>
-      <p><a href="mailto:Saeedt70@gmail.com" class="link">Saeedt70@gmail.com</a></p>
-      <p>We’d love to hear from you!</p>
-      <button class="close-btn" onclick="closeModal('contactModal')">Close</button>
-    </div>
-  </div>
+       <a href="https://s.click.aliexpress.com/e/_c4kCRi4b?bz=300*250" target="_parent">
+      <img src="https://ae01.alicdn.com/kf/S3619e57974f148d087c950fe497cdf55q/300x250.jpg" alt="AliExpress Banner">
+    </a>
 
-  <!-- Join Modal -->
-  <div id="joinModal" class="modal">
-    <div class="modal-content">
-      <h2>Join & Collaboration</h2>
-      <p>
-        Interested in collaboration, sponsorship, sharing your ideas, feedback, or reporting a bug?  
-        We welcome creative minds and passionate supporters who want to help shape the future of AI-powered gaming.  
-      </p>
-      <p>
-        Every bit of support helps!  
-        With your donations and feedback, we can develop more advanced and exciting games faster.
-      </p>
-      <p>Email us at: <a href="mailto:Saeedt70@gmail.com" class="link">Saeedt70@gmail.com</a></p>
-      <button class="close-btn" onclick="closeModal('joinModal')">Close</button>
-    </div>
-  </div>
-
-  <!-- Rules Modal -->
-  <div id="rulesModal" class="modal">
-    <div class="modal-content">
-      <h2>Rules & Copyright</h2>
-      <p>
-        🚫 Copying, modifying, or disrupting the functionality of AiGame is strictly prohibited and will be subject to legal action.  
-        © All rights and content belong exclusively to the AiGame Development Team.  
-        Play fair, respect creativity, and support innovation!
-      </p>
-      <button class="close-btn" onclick="closeModal('rulesModal')">Close</button>
-    </div>
   </div>
 
   <!-- Main Game -->
   <div class="slider">
     <div class="slides">
-      <img src="https://raw.githubusercontent.com/saeedt70/mathgame/refs/heads/main/1.PNG" alt="Main Game">
+      <img src="1.PNG" alt="Main Game">
+      <center><p class="coming-soon">Math Game</p></center>
     </div>
   </div>
 
@@ -290,25 +288,28 @@
   <!-- Other Games -->
   <section class="games-section">
     <div class="game-card">
-      <img src="https://raw.githubusercontent.com/saeedt70/mathgame/refs/heads/main/2.PNG" alt="Game 2">
-      <p class="coming-soon">Coming Soon</p>
-      <button class="start-btn" onclick="window.location.href='q.html'">Start Game1 🚀</button>
+      <img src="2.PNG" alt="General Knowledge Quiz">
+      <p class="coming-soon">General Knowledge Quiz</p>
+      <button class="start-btn" onclick="window.location.href='q.html'">Start Game 🚀</button>
     </div>
     <div class="game-card">
-      <img src="https://raw.githubusercontent.com/saeedt70/mathgame/refs/heads/main/7.jpg" alt="Game 4">
-      <p class="coming-soon">Coming Soon</p>
-      <button class="start-btn" disabled>Start Game</button>
+      <img src="3.PNG" alt="RunnerEmoji: An Exciting Game">
+      <p class="coming-soon">RunnerEmoji: An Exciting Game</p>
+      <button class="start-btn" onclick="window.location.href='r.html'">Start Game 🚀</button>
     </div>
     <div class="game-card">
-      <img src="https://raw.githubusercontent.com/saeedt70/mathgame/refs/heads/main/4.png" alt="Game 5">
-      <p class="coming-soon">Coming Soon</p>
-      <button class="start-btn" disabled>Start Game</button>
+      <img src="5.PNG" alt="Matching pairs">
+      <p class="coming-soon">Matching pairs</p>
+      <button class="start-btn" onclick="window.location.href='p.html'">Start Game 🚀</button>
     </div>
   </section>
 
-  <!-- Ads -->
+  <!-- Bottom banner ad -->
   <div class="ads">
-    <p>Your Ad Here!</p>
+ <a href="https://s.click.aliexpress.com/e/_c4O8Msvz" target="_blank">
+      <img src="https://ae-pic-a1.aliexpress-media.com/kf/S363d2083b86049eca66a77807c6705a0J.jpg" alt="AliExpress Banner">
+    </a>
+
   </div>
 
   <!-- Donate -->
@@ -344,7 +345,3 @@
   </script>
 </body>
 </html>
-
-
-
-
